@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "39763419531-jgd9tdcf7caj0f44pk8nocfhtb19m8fq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.daviddzakpasu.travelmantics",
+            "certificate_hash": "2422905fa95b84ea1ab5962d98319e7571bedd75"
+          }
+        },
+        {
           "client_id": "39763419531-fv7gnoeae5aurgedtqs2t4g0rjcpe4nk.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
