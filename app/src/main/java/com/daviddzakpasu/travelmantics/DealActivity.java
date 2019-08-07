@@ -1,8 +1,5 @@
 package com.daviddzakpasu.travelmantics;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -16,6 +13,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -57,10 +57,22 @@ public class DealActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         HolidayDeal deal = (HolidayDeal) intent.getSerializableExtra("Deal");
+
         if (deal == null) {
             deal = new HolidayDeal();
         }
         this.deal = deal;
+
+        if (FirebaseUtil.isAdmin == true) {
+            if (deal.getId() == null) {
+                setTitle("New Holiday Deal");
+            } else {
+                setTitle("Edit Deal");
+            }
+        } else {
+            setTitle("Deal details");
+        }
+
         txtTitle.setText(deal.getTitle());
         txtDescription.setText(deal.getDescription());
         txtPrice.setText(deal.getPrice());
@@ -133,8 +145,6 @@ public class DealActivity extends AppCompatActivity {
                         if (!task.isSuccessful()) {
                             throw Objects.requireNonNull(task.getException());
                         }
-
-                        // Continue with the task to get the download URL
                         return ref.getDownloadUrl();
                     }
                 }).addOnCompleteListener(new OnCompleteListener<Uri>() {

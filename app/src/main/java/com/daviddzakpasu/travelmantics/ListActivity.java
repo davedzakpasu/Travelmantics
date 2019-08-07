@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,38 +18,62 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ListActivity extends AppCompatActivity {
-//    ArrayList<HolidayDeal> deals;
-//    private FirebaseDatabase mFirebaseDatabase;
-//    private DatabaseReference mDatabaseReference;
-//    private ChildEventListener mChildEventListener;
-//    private FirebaseRecyclerAdapter <HolidayDeal, DealAdapter.DealViewHolder> mDealAdapter;
+
     private RecyclerView rvDeals;
+    private FloatingActionButton fabNewDeal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user);
+        setContentView(R.layout.activity_list);
 
         rvDeals = findViewById(R.id.rv_deals);
         rvDeals.setHasFixedSize(true);
 
-/*        @SuppressLint("WrongConstant") LinearLayoutManager dealsLayoutManager =
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rvDeals.setLayoutManager(dealsLayoutManager);*/
+        fabNewDeal = findViewById(R.id.fab_newDeal);
+
+        fabNewDeal.hide();
+
+        if (FirebaseUtil.isAdmin) {
+            fabNewDeal.show();
+        } else fabNewDeal.hide();
+
+        rvDeals.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (FirebaseUtil.isAdmin) {
+                    if (dy > 0 && fabNewDeal.getVisibility() == View.VISIBLE) {
+                        fabNewDeal.hide();
+                    } else if (dy < 0 && fabNewDeal.getVisibility() != View.VISIBLE) {
+                        fabNewDeal.show();
+                    }
+                }
+            }
+        });
+
+        fabNewDeal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ListActivity.this, DealActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.list_menu, menu);
-        MenuItem menuInsert = menu.findItem(R.id.menu_insert);
-        if (FirebaseUtil.isAdmin == true) {
-            menuInsert.setVisible(true);
+//        MenuItem menuInsert = menu.findItem(R.id.menu_insert);
+        /*if (FirebaseUtil.isAdmin == true) {
+            fabNewDeal.show();
         }
         else {
-            menuInsert.setVisible(false);
-        }
+            fabNewDeal.hide();
+        }*/
         return true;
     }
 
@@ -56,13 +81,13 @@ public class ListActivity extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         if(Build.VERSION.SDK_INT > 11) {
             invalidateOptionsMenu();
-            MenuItem menuInsert = menu.findItem(R.id.menu_insert);
-            if (FirebaseUtil.isAdmin == true) {
-                menuInsert.setVisible(true);
+//            MenuItem menuInsert = menu.findItem(R.id.menu_insert);
+            /*if (FirebaseUtil.isAdmin == true) {
+                fabNewDeal.show();
             }
             else {
-                menuInsert.setVisible(false);
-            }
+                fabNewDeal.hide();
+            }*/
         }
         return super.onPrepareOptionsMenu(menu);
     }
@@ -70,10 +95,10 @@ public class ListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_insert:
+            /*case R.id.menu_insert:
                 Intent intent = new Intent(this, DealActivity.class);
                 startActivity(intent);
-                return true;
+                return true;*/
             case R.id.menu_logout:
                 AuthUI.getInstance()
                         .signOut(this)
@@ -88,8 +113,6 @@ public class ListActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 
     @Override
     protected void onPause() {

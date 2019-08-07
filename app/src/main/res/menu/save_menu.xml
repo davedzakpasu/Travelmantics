@@ -4,10 +4,12 @@
 
     <item
         android:id="@+id/menu_save"
+        android:icon="@drawable/baseline_save_white_48"
         android:title="@string/save_deal"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_delete"
+        android:icon="@drawable/baseline_delete_white_48"
         android:title="@string/delete_deal"
-        app:showAsAction="never"/>
+        app:showAsAction="never|ifRoom" />
 </menu>

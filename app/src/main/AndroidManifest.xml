@@ -11,8 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ListActivity"
-            android:label="@string/app_name"
+            android:label="@string/holiday_deals"
             android:screenOrientation="portrait">
+            <action android:name="android.intent.action.VIEW" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
