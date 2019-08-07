@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.daviddzakpasu.travelmantics">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.daviddzakpasu.travelmantics"
+    tools:ignore="GoogleAppIndexingWarning">
 
 
     <application
@@ -13,7 +15,6 @@
         <activity android:name=".ListActivity"
             android:label="@string/holiday_deals"
             android:screenOrientation="portrait">
-            <action android:name="android.intent.action.VIEW" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
